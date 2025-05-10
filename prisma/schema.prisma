@@ -13,3 +13,96 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+model User {
+  id                String             @id @default(uuid())
+  clerkUserId       String             @unique
+  cvs               CV[]
+  interviewSessions InterviewSession[]
+
+  @@map("users")
+}
+
+model CV {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  summary   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user             User               @relation(fields: [userId], references: [id])
+  experiences      Experience[]
+  educations       Education[]
+  skills           Skill[]
+  InterviewSession InterviewSession[]
+
+  @@map("cvs")
+}
+
+model Experience {
+  id          String    @id @default(uuid())
+  cvId        String
+  companyName String
+  role        String
+  startDate   DateTime
+  endDate     DateTime?
+  description String
+
+  cv CV @relation(fields: [cvId], references: [id])
+
+  @@map("experiences")
+}
+
+model Education {
+  id          String  @id @default(uuid())
+  cvId        String
+  institution String
+  degree      String
+  startYear   Int
+  endYear     Int?
+  CV          CV?     @relation(fields: [cVId], references: [id])
+  cVId        String?
+}
+
+model Skill {
+  id    String     @id @default(uuid())
+  cvId  String
+  name  String
+  level SkillLevel
+
+  cv CV @relation(fields: [cvId], references: [id])
+
+  @@map("skills")
+}
+
+enum SkillLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model InterviewSession {
+  id              String   @id @default(uuid())
+  userId          String
+  cvId            String
+  positionApplied String
+  score           Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  answers InterviewAnswer[]
+
+  user User @relation(fields: [userId], references: [id])
+  cv   CV   @relation(fields: [cvId], references: [id])
+}
+
+model InterviewAnswer {
+  id        String           @id @default(uuid())
+  session   InterviewSession @relation(fields: [sessionId], references: [id])
+  sessionId String
+  question  String
+  answer    String
+  feedback  String
+  score     Float?
+}
