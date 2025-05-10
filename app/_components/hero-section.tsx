@@ -4,9 +4,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
   const [hovered, setHovered] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -85,9 +87,12 @@ export default function HeroSection() {
           >
             <Button
               size="lg"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-6 rounded-xl text-lg font-medium transition-all duration-200 shadow-lg shadow-purple-500/20"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-6 rounded-xl text-lg font-medium transition-all duration-200 shadow-lg shadow-purple-500/20 cursor-pointer"
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
+              onClick={() => {
+                router.push("/dashboard");
+              }}
             >
               <span>Start Your Journey</span>
               <motion.div
