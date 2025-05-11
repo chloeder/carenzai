@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-
 import {
   Card,
   CardContent,
@@ -9,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useInitUser } from "@/utils/hooks/use-init-user";
 import {
   ArrowUpRight,
   BarChart3,
@@ -16,8 +16,16 @@ import {
   MessageSquare,
   Users,
 } from "lucide-react";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Dashboard() {
+  const { refetch } = useInitUser();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   return (
     <main className="flex-1 overflow-auto p-4 md:p-6">
       <div className="space-y-6">
@@ -185,8 +193,11 @@ export default function Dashboard() {
                 Our AI-powered interview simulator helps you prepare for
                 technical and behavioral interviews with real-time feedback.
               </p>
-              <Button className="text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-                Start Practice Interview
+              <Button
+                asChild
+                className="text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+              >
+                <Link href="/interview">Start Practice Interview</Link>
               </Button>
             </CardContent>
           </Card>
@@ -203,8 +214,11 @@ export default function Dashboard() {
                 Our AI resume builder helps you create professional,
                 ATS-optimized resumes tailored to specific job descriptions.
               </p>
-              <Button className="text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700">
-                Create New Resume
+              <Button
+                asChild
+                className="text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+              >
+                <Link href="/resume">Create New Resume</Link>
               </Button>
             </CardContent>
           </Card>

@@ -1,14 +1,5 @@
 "use client";
 
-import {
-  ArrowLeft,
-  ArrowRight,
-  Clock,
-  MessageSquare,
-  Play,
-  Plus,
-  Star,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,8 +10,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Clock,
+  MessageSquare,
+  Play,
+  Plus,
+  Star,
+} from "lucide-react";
+import { useGetInterview } from "@/utils/hooks/use-get-interview";
+import { useUser } from "@clerk/nextjs";
 
 export default function InterviewContent() {
+  const { user } = useUser();
+  const { data: interview } = useGetInterview(user?.id ?? "");
+
+  console.log("interview", interview);
+
   return (
     <main className="w-full h-full overflow-auto">
       <div className="space-y-6 p-4 md:p-6 w-full">
@@ -33,7 +40,7 @@ export default function InterviewContent() {
               Practice and prepare for your upcoming interviews.
             </p>
           </div>
-          <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+          <Button className="text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
             <Plus className="mr-2 h-4 w-4" />
             New Interview
           </Button>
