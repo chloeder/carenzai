@@ -55,14 +55,9 @@ export function SidebarLayout() {
       <SidebarHeader className="py-6">
         <div className="flex items-center justify-center px-4">
           <div className="flex items-center gap-2">
-            <div className="relative h-8 w-8 overflow-hidden rounded-full bg-gradient-to-br from-purple-500 to-indigo-600">
-              <div className="absolute inset-0 flex items-center justify-center text-white font-bold">
-                A
-              </div>
-            </div>
-            <div className="font-semibold text-lg text-white">
+            <span className="font-semibold text-lg text-white">
               AI Career Guide
-            </div>
+            </span>
           </div>
           {!isMobile && (
             <div className="ml-auto">
