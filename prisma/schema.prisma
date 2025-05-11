@@ -63,6 +63,8 @@ model Education {
   endYear     Int?
   CV          CV?     @relation(fields: [cVId], references: [id])
   cVId        String?
+
+  @@map("educations")
 }
 
 model Skill {
@@ -95,6 +97,8 @@ model InterviewSession {
 
   user User @relation(fields: [userId], references: [id])
   cv   CV   @relation(fields: [cvId], references: [id])
+
+  @@map("interview_sessions")
 }
 
 model InterviewAnswer {
@@ -105,4 +109,6 @@ model InterviewAnswer {
   answer    String
   feedback  String
   score     Float?
+
+  @@map("interview_answers")
 }
