@@ -32,7 +32,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { NewInterviewModalProps } from "../../../../utils/types/interview";
 import { formSchema } from "../../../../utils/validations/interview";
-
+import { InterviewType } from "@prisma/client";
 export function NewInterviewModal({
   onSubmit,
   isPending,
@@ -43,6 +43,8 @@ export function NewInterviewModal({
       position: "",
       duration: "",
       resume: undefined,
+      type: "",
+      language: "",
     },
   });
 
@@ -68,10 +70,42 @@ export function NewInterviewModal({
                 position: values.position,
                 duration: values.duration,
                 resume: values.resume,
+                type: values.type as InterviewType,
+                language: values.language,
               });
             })}
             className="space-y-4"
           >
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Interview Type</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white w-full">
+                          <SelectValue placeholder="Select a type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value={InterviewType.TECHNICAL}>
+                          Technical
+                        </SelectItem>
+                        <SelectItem value={InterviewType.BEHAVIORAL}>
+                          Behavioral
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="position"
@@ -94,7 +128,7 @@ export function NewInterviewModal({
               name="duration"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Interview Duration (minutes)</FormLabel>
+                  <FormLabel>Duration (minutes)</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -110,6 +144,32 @@ export function NewInterviewModal({
                       <SelectItem value="20">20 minutes</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="language"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Language</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white w-full">
+                          <SelectValue placeholder="Select a language" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="english">English</SelectItem>
+                        <SelectItem value="indonesia">Indonesia</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

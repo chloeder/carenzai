@@ -46,9 +46,11 @@ model InterviewSession {
   resumeId        String
   positionApplied String
   duration        Int
+  type            InterviewType
   score           Float?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  language        String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   resume  Resume            @relation(fields: [resumeId], references: [id])
   answers InterviewAnswer[]
@@ -68,4 +70,9 @@ model InterviewAnswer {
   session   InterviewSession @relation(fields: [sessionId], references: [id])
 
   @@map("interview_answers")
+}
+
+enum InterviewType {
+  TECHNICAL
+  BEHAVIORAL
 }

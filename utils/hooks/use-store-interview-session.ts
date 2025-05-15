@@ -1,14 +1,18 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { storeInterviewSession } from "../actions/store-interview-session";
+import { toast } from "sonner";
 
 export function useStoreInterviewSession() {
+  const queryClient = useQueryClient();
+
   const { mutate: interviewSession, isPending } = useMutation({
     mutationFn: storeInterviewSession,
     onSuccess: () => {
-      console.log("Interview session stored successfully");
+      queryClient.invalidateQueries({ queryKey: ["interview-session"] });
+      toast.success("Interview session created successfully");
     },
     onError: () => {
-      console.log("Failed to store interview session");
+      toast.error("Failed to create interview session");
     },
   });
 

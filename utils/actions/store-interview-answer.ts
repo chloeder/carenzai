@@ -36,7 +36,11 @@ export async function storeInterviewAnswer(data: InterviewAnswerFormData) {
       "http://localhost:3000/api/vapi/generate-question",
       {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          language: session.language,
+          type: session.type,
+        }),
       }
     );
 

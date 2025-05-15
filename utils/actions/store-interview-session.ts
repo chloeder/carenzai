@@ -29,6 +29,8 @@ export async function storeInterviewSession(data: InterviewSessionFormData) {
         resumeId: resume.id,
         positionApplied: data.position,
         duration: parseInt(data.duration),
+        type: data.type,
+        language: data.language,
       },
     });
 
