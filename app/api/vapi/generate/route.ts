@@ -47,30 +47,34 @@ export async function POST(request: NextRequest) {
               Please format the response as a JSON object with the following structure:
               {
                 "title": string,
-                "summary": string,
-                "experience": [
-                  {
-                    "companyName": string,
-                    "role": string,
-                    "startDate": string,
-                    "endDate": string,
-                    "description": string
-                  }
-                ],
-                "education": [
-                  {
-                    "institution": string,
-                    "degree": string,
-                    "startYear": string,
-                    "endYear": string
-                  }
-                ],
-                "skills": [
-                  {
-                    "name": string,
-                    "level": "beginner" | "intermediate" | "advanced"
-                  }
-                ]
+
+                "content":
+                {
+                  "summary": string,
+                  "experience" : [
+                    {
+                      "companyName": string,
+                      "role": string,
+                      "startDate": string,
+                      "endDate": string,
+                      "description": string
+                    }
+                  ],
+                  "education" : [
+                    {
+                      "institution": string,
+                      "degree": string,
+                      "startYear": string,
+                      "endYear": string
+                    }
+                  ],
+                  "skills" : [
+                    {
+                      "name": string,
+                      "level": "beginner" | "intermediate" | "advanced"
+                    }
+                  ]
+                }
               }`,
             },
             {

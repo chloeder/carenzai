@@ -16,11 +16,17 @@ import {
   Clock,
   MessageSquare,
   Play,
-  Plus,
   Star,
 } from "lucide-react";
+import { NewInterviewModal } from "./_components/new-interview-modal";
+import { InterviewFormData } from "../../../utils/types/interview";
 
 export default function InterviewContent() {
+  function handleSubmit(values: InterviewFormData) {
+    console.log(values);
+    // Handle form submission here
+  }
+
   return (
     <main className="w-full h-full overflow-auto">
       <div className="space-y-6 p-4 md:p-6 w-full">
@@ -33,10 +39,7 @@ export default function InterviewContent() {
               Practice and prepare for your upcoming interviews.
             </p>
           </div>
-          <Button className="text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-            <Plus className="mr-2 h-4 w-4" />
-            New Interview
-          </Button>
+          <NewInterviewModal onSubmit={handleSubmit} />
         </div>
 
         <Tabs defaultValue="all" className="space-y-4">

@@ -27,7 +27,7 @@ model Resume {
   id        String    @id @default(uuid())
   userId    String
   title     String
-  content   Json[]
+  content   Json
   score     Float?
   scoredAt  DateTime?
   createdAt DateTime  @default(now())

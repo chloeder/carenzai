@@ -8,6 +8,9 @@ export async function getNewestInterviewSession(userId: string) {
     where: {
       userId: userId,
     },
+    include: {
+      answers: true,
+    },
     orderBy: {
       createdAt: "desc",
     },
