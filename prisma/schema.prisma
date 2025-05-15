@@ -17,98 +17,55 @@ datasource db {
 model User {
   id                String             @id @default(uuid())
   clerkUserId       String             @unique
-  cvs               CV[]
+  resumes           Resume[]
   interviewSessions InterviewSession[]
 
   @@map("users")
 }
 
-model CV {
-  id        String   @id @default(uuid())
+model Resume {
+  id        String    @id @default(uuid())
   userId    String
   title     String
-  summary   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  content   Json[]
+  score     Float?
+  scoredAt  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
 
-  user             User               @relation(fields: [userId], references: [id])
-  experiences      Experience[]
-  educations       Education[]
-  skills           Skill[]
   InterviewSession InterviewSession[]
 
-  @@map("cvs")
-}
-
-model Experience {
-  id          String    @id @default(uuid())
-  cvId        String
-  companyName String
-  role        String
-  startDate   DateTime
-  endDate     DateTime?
-  description String
-
-  cv CV @relation(fields: [cvId], references: [id])
-
-  @@map("experiences")
-}
-
-model Education {
-  id          String  @id @default(uuid())
-  cvId        String
-  institution String
-  degree      String
-  startYear   Int
-  endYear     Int?
-  CV          CV?     @relation(fields: [cVId], references: [id])
-  cVId        String?
-
-  @@map("educations")
-}
-
-model Skill {
-  id    String     @id @default(uuid())
-  cvId  String
-  name  String
-  level SkillLevel
-
-  cv CV @relation(fields: [cvId], references: [id])
-
-  @@map("skills")
-}
-
-enum SkillLevel {
-  BEGINNER
-  INTERMEDIATE
-  ADVANCED
+  @@map("resumes")
 }
 
 model InterviewSession {
-  id              String   @id @default(uuid())
+  id String @id @default(uuid())
+
   userId          String
-  cvId            String
+  resumeId        String
   positionApplied String
+  duration        Int
   score           Float?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  resume  Resume            @relation(fields: [resumeId], references: [id])
   answers InterviewAnswer[]
 
   user User @relation(fields: [userId], references: [id])
-  cv   CV   @relation(fields: [cvId], references: [id])
 
   @@map("interview_sessions")
 }
 
 model InterviewAnswer {
   id        String           @id @default(uuid())
-  session   InterviewSession @relation(fields: [sessionId], references: [id])
   sessionId String
   question  String
   answer    String
   feedback  String
   score     Float?
+  session   InterviewSession @relation(fields: [sessionId], references: [id])
 
   @@map("interview_answers")
 }

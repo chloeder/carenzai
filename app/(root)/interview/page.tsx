@@ -19,15 +19,8 @@ import {
   Plus,
   Star,
 } from "lucide-react";
-import { useGetInterview } from "@/utils/hooks/use-get-interview";
-import { useUser } from "@clerk/nextjs";
 
 export default function InterviewContent() {
-  const { user } = useUser();
-  const { data: interview } = useGetInterview(user?.id ?? "");
-
-  console.log("interview", interview);
-
   return (
     <main className="w-full h-full overflow-auto">
       <div className="space-y-6 p-4 md:p-6 w-full">
