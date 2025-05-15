@@ -1,11 +1,10 @@
 "use server";
 
-import { currentUser } from "@clerk/nextjs/server";
+import { getCurrentUser } from "./get-current-user";
 import { db } from "../dbs";
-import { ResumeData } from "../types/resume";
 
-export async function storeResume(data: ResumeData) {
-  const user = await currentUser();
+export async function storeResume(data: File) {
+  const user = await getCurrentUser();
 
   if (!user) {
     throw new Error("User not found");
@@ -14,13 +13,15 @@ export async function storeResume(data: ResumeData) {
   try {
     const formData = new FormData();
 
-    formData.append("title", data.title);
-    formData.append("content", JSON.stringify(data.content));
+    formData.append("resume", data);
 
-    const response = await fetch("/api/vapi/generate", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      "http://localhost:3000/api/gemini/summary-resume",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const result = await response.json();
 

@@ -61,9 +61,9 @@ model InterviewSession {
 model InterviewAnswer {
   id        String           @id @default(uuid())
   sessionId String
-  question  String
-  answer    String
-  feedback  String
+  question  String?
+  answer    String?
+  feedback  String?
   score     Float?
   session   InterviewSession @relation(fields: [sessionId], references: [id])
 

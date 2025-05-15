@@ -1,9 +1,18 @@
-export interface InterviewFormData {
+export interface InterviewSessionFormData {
   position: string;
   duration: string;
-  resume?: File;
+  resume: File;
 }
 
 export interface NewInterviewModalProps {
-  onSubmit: (values: InterviewFormData) => void;
+  onSubmit: (values: InterviewSessionFormData) => void;
+  isPending: boolean;
+}
+
+export interface InterviewAnswerFormData {
+  sessionId: string;
+  question: string;
+  answer: string;
+  feedback: string;
+  score: number;
 }

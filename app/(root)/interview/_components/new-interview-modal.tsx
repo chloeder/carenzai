@@ -33,12 +33,16 @@ import * as z from "zod";
 import { NewInterviewModalProps } from "../../../../utils/types/interview";
 import { formSchema } from "../../../../utils/validations/interview";
 
-export function NewInterviewModal({ onSubmit }: NewInterviewModalProps) {
+export function NewInterviewModal({
+  onSubmit,
+  isPending,
+}: NewInterviewModalProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       position: "",
       duration: "",
+      resume: undefined,
     },
   });
 
@@ -58,7 +62,16 @@ export function NewInterviewModal({ onSubmit }: NewInterviewModalProps) {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit((values) => {
+              onSubmit({
+                position: values.position,
+                duration: values.duration,
+                resume: values.resume,
+              });
+            })}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="position"
@@ -127,9 +140,12 @@ export function NewInterviewModal({ onSubmit }: NewInterviewModalProps) {
             <DialogFooter>
               <Button
                 type="submit"
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                className="text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                disabled={form.formState.isSubmitting || isPending}
               >
-                Start Interview
+                {form.formState.isSubmitting || isPending
+                  ? "Starting..."
+                  : "Start Interview"}
               </Button>
             </DialogFooter>
           </form>

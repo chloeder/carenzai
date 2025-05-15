@@ -19,12 +19,18 @@ import {
   Star,
 } from "lucide-react";
 import { NewInterviewModal } from "./_components/new-interview-modal";
-import { InterviewFormData } from "../../../utils/types/interview";
+import { InterviewSessionFormData } from "@/utils/types/interview";
+import { useStoreInterviewSession } from "@/utils/hooks/use-store-interview-session";
 
 export default function InterviewContent() {
-  function handleSubmit(values: InterviewFormData) {
-    console.log(values);
-    // Handle form submission here
+  const { interviewSession, isPending } = useStoreInterviewSession();
+
+  async function handleSubmit(values: InterviewSessionFormData) {
+    try {
+      await interviewSession(values);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -39,7 +45,7 @@ export default function InterviewContent() {
               Practice and prepare for your upcoming interviews.
             </p>
           </div>
-          <NewInterviewModal onSubmit={handleSubmit} />
+          <NewInterviewModal onSubmit={handleSubmit} isPending={isPending} />
         </div>
 
         <Tabs defaultValue="all" className="space-y-4">
