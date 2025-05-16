@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useGetInterview } from "@/utils/hooks/use-get-interview";
+import { useGetResume } from "@/utils/hooks/use-get-resume";
 import { useInitUser } from "@/utils/hooks/use-init-user";
 import {
   ArrowUpRight,
@@ -20,7 +22,11 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 export default function Dashboard() {
-  const { refetch } = useInitUser();
+  const { refetch, data: user } = useInitUser();
+  const { data: interviews } = useGetInterview(user?.id ?? "");
+  const { data: resumes } = useGetResume(user?.id ?? "");
+  console.log(interviews);
+  console.log(resumes);
 
   useEffect(() => {
     refetch();
@@ -47,7 +53,9 @@ export default function Dashboard() {
               <MessageSquare className="h-4 w-4 text-purple-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">12</div>
+              <div className="text-2xl font-bold text-white">
+                {interviews?.length ?? 0}
+              </div>
               <p className="text-xs text-gray-400">+2 from last week</p>
             </CardContent>
           </Card>
@@ -60,7 +68,9 @@ export default function Dashboard() {
               <FileText className="h-4 w-4 text-indigo-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">4</div>
+              <div className="text-2xl font-bold text-white">
+                {resumes?.length ?? 0}
+              </div>
               <p className="text-xs text-gray-400">+1 from last week</p>
             </CardContent>
           </Card>
@@ -93,39 +103,6 @@ export default function Dashboard() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-          <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm col-span-4">
-            <CardHeader>
-              <CardTitle className="text-gray-100">Weekly Activity</CardTitle>
-              <CardDescription className="text-gray-400">
-                Your interview and resume activity for the past week
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[200px] flex items-end gap-2">
-                {[40, 25, 55, 32, 80, 45, 60].map((height, i) => (
-                  <div key={i} className="relative flex-1 group">
-                    <div
-                      className="absolute bottom-0 w-full bg-gradient-to-t from-purple-600 to-indigo-500 rounded-sm"
-                      style={{ height: `${height}%` }}
-                    ></div>
-                    <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded transition-opacity">
-                      {height}%
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-between mt-2 text-xs text-gray-400">
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
-                <div>Sun</div>
-              </div>
-            </CardContent>
-          </Card>
-
           <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm col-span-3">
             <CardHeader>
               <CardTitle className="text-gray-100">
@@ -176,52 +153,52 @@ export default function Dashboard() {
               ))}
             </CardContent>
           </Card>
-        </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card className="bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border-gray-700 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-white">
-                Interview Preparation
-              </CardTitle>
-              <CardDescription className="text-gray-300">
-                Practice with AI-powered mock interviews
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-gray-300">
-                Our AI-powered interview simulator helps you prepare for
-                technical and behavioral interviews with real-time feedback.
-              </p>
-              <Button
-                asChild
-                className="text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
-              >
-                <Link href="/interview">Start Practice Interview</Link>
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="flex flex-col gap-4 col-span-4">
+            <Card className="bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border-gray-700 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-white">
+                  Interview Preparation
+                </CardTitle>
+                <CardDescription className="text-gray-300">
+                  Practice with AI-powered mock interviews
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-gray-300">
+                  Our AI-powered interview simulator helps you prepare for
+                  technical and behavioral interviews with real-time feedback.
+                </p>
+                <Button
+                  asChild
+                  className="text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                >
+                  <Link href="/interview">Start Practice Interview</Link>
+                </Button>
+              </CardContent>
+            </Card>
 
-          <Card className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-gray-700 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-white">Resume Builder</CardTitle>
-              <CardDescription className="text-gray-300">
-                Create ATS-optimized resumes with AI assistance
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-gray-300">
-                Our AI resume builder helps you create professional,
-                ATS-optimized resumes tailored to specific job descriptions.
-              </p>
-              <Button
-                asChild
-                className="text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
-              >
-                <Link href="/resume">Create New Resume</Link>
-              </Button>
-            </CardContent>
-          </Card>
+            <Card className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-gray-700 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-white">Resume Builder</CardTitle>
+                <CardDescription className="text-gray-300">
+                  Create ATS-optimized resumes with AI assistance
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-gray-300">
+                  Our AI resume builder helps you create professional,
+                  ATS-optimized resumes tailored to specific job descriptions.
+                </p>
+                <Button
+                  asChild
+                  className="text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                >
+                  <Link href="/resume">Create New Resume</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </main>
