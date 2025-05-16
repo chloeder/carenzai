@@ -51,7 +51,7 @@ export function NewInterviewModal({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+        <Button className="text-white cursor-pointer bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
           <Plus className="mr-2 h-4 w-4" />
           New Interview
         </Button>

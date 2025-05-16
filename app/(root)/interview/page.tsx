@@ -6,7 +6,7 @@ import { useGetInterview } from "@/utils/hooks/use-get-interview";
 import { useInitUser } from "@/utils/hooks/use-init-user";
 import { useStoreInterviewSession } from "@/utils/hooks/use-store-interview-session";
 import { InterviewSessionFormData } from "@/utils/types/interview";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { CardInterview } from "./_components/card-interview";
 import { NewInterviewModal } from "./_components/new-interview-modal";
@@ -17,7 +17,7 @@ export default function InterviewContent() {
   const [type, setType] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-  const { data: interviews } = useGetInterview(user?.id ?? "");
+  const { data: interviews, isLoading } = useGetInterview(user?.id ?? "");
 
   async function handleSubmit(values: InterviewSessionFormData) {
     try {
@@ -85,7 +85,11 @@ export default function InterviewContent() {
 
           <TabsContent value={type} className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {paginatedInterviews?.length ? (
+              {isLoading ? (
+                <div className="flex items-center col-span-full justify-center h-full text-purple-500">
+                  <Loader2 className="h-14 w-14 animate-spin" />
+                </div>
+              ) : paginatedInterviews?.length ? (
                 paginatedInterviews?.map((interview) => (
                   <CardInterview key={interview.id} interview={interview} />
                 ))

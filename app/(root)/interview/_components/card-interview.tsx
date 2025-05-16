@@ -28,20 +28,13 @@ export function CardInterview({
           >
             {interview.type}
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-gray-400 hover:text-white"
-          >
-            <Star className="h-4 w-4" />
-          </Button>
         </div>
         <CardTitle className="text-lg text-white mt-2">
           {interview.positionApplied} Interview
         </CardTitle>
         <CardDescription className="text-gray-400 flex items-center gap-2">
           Language :
-          {interview.language === "en" ? (
+          {interview.language === "english" ? (
             <div className="flex items-center gap-2">
               <img
                 width="20"
