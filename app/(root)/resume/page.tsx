@@ -499,61 +499,6 @@ export default function ResumeContent() {
           </TabsContent>
         </Tabs>
 
-        <div className="mt-8">
-          <Card className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-gray-700 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-white">Resume Templates</CardTitle>
-              <CardDescription className="text-gray-300">
-                Choose from our professionally designed resume templates
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="relative overflow-hidden rounded-lg border border-gray-700 bg-gray-800/50 p-2">
-                  <div className="aspect-[3/4] bg-gray-700/50 rounded-md flex items-center justify-center">
-                    <FileText className="h-12 w-12 text-indigo-400" />
-                  </div>
-                  <div className="mt-2 text-center">
-                    <p className="text-sm font-medium text-white">Modern</p>
-                    <p className="text-xs text-gray-400">
-                      Clean and professional
-                    </p>
-                  </div>
-                </div>
-
-                <div className="relative overflow-hidden rounded-lg border border-gray-700 bg-gray-800/50 p-2">
-                  <div className="aspect-[3/4] bg-gray-700/50 rounded-md flex items-center justify-center">
-                    <FileText className="h-12 w-12 text-purple-400" />
-                  </div>
-                  <div className="mt-2 text-center">
-                    <p className="text-sm font-medium text-white">Creative</p>
-                    <p className="text-xs text-gray-400">
-                      Stand out from the crowd
-                    </p>
-                  </div>
-                </div>
-
-                <div className="relative overflow-hidden rounded-lg border border-gray-700 bg-gray-800/50 p-2">
-                  <div className="aspect-[3/4] bg-gray-700/50 rounded-md flex items-center justify-center">
-                    <FileText className="h-12 w-12 text-blue-400" />
-                  </div>
-                  <div className="mt-2 text-center">
-                    <p className="text-sm font-medium text-white">Executive</p>
-                    <p className="text-xs text-gray-400">
-                      For senior positions
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700">
-                Browse All Templates
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-
         <div className="mt-6">
           <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
             <CardHeader>
