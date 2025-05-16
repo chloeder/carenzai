@@ -27,12 +27,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { InterviewType } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { NewInterviewModalProps } from "../../../../utils/types/interview";
 import { formSchema } from "../../../../utils/validations/interview";
-import { InterviewType } from "@prisma/client";
 export function NewInterviewModal({
   onSubmit,
   isPending,

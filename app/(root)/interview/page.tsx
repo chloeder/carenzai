@@ -1,37 +1,50 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Clock,
-  MessageSquare,
-  Play,
-  Star,
-} from "lucide-react";
-import { NewInterviewModal } from "./_components/new-interview-modal";
-import { InterviewSessionFormData } from "@/utils/types/interview";
+import { useGetInterview } from "@/utils/hooks/use-get-interview";
+import { useInitUser } from "@/utils/hooks/use-init-user";
 import { useStoreInterviewSession } from "@/utils/hooks/use-store-interview-session";
+import { InterviewSessionFormData } from "@/utils/types/interview";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { CardInterview } from "./_components/card-interview";
+import { NewInterviewModal } from "./_components/new-interview-modal";
 
 export default function InterviewContent() {
+  const { data: user } = useInitUser();
   const { interviewSession, isPending } = useStoreInterviewSession();
+  const [type, setType] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+  const { data: interviews } = useGetInterview(user?.id ?? "");
 
   async function handleSubmit(values: InterviewSessionFormData) {
     try {
       await interviewSession(values);
     } catch (error) {
-      console.error(error);
+      console;
     }
   }
+
+  const filteredInterviews = interviews?.filter((interview) => {
+    if (type === "all") return true;
+    return interview.type.toLowerCase() === type;
+  });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(
+    (filteredInterviews?.length || 0) / itemsPerPage
+  );
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedInterviews = filteredInterviews?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <main className="w-full h-full overflow-auto">
@@ -48,7 +61,7 @@ export default function InterviewContent() {
           <NewInterviewModal onSubmit={handleSubmit} isPending={isPending} />
         </div>
 
-        <Tabs defaultValue="all" className="space-y-4">
+        <Tabs defaultValue={type} onValueChange={setType} className="space-y-4">
           <TabsList className="bg-gray-800/50 text-gray-400">
             <TabsTrigger
               value="all"
@@ -68,336 +81,63 @@ export default function InterviewContent() {
             >
               Behavioral
             </TabsTrigger>
-            <TabsTrigger
-              value="saved"
-              className="data-[state=active]:bg-gray-700 data-[state=active]:text-white"
-            >
-              Saved
-            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="space-y-4">
+          <TabsContent value={type} className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-purple-500/10 text-purple-500 px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      Technical
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-400 hover:text-white"
-                    >
-                      <Star className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <CardTitle className="text-lg text-white mt-2">
-                    Frontend Developer Interview
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    React, JavaScript, CSS
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Clock className="h-4 w-4" />
-                    <span>30 minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>25 questions</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-                    <Play className="mr-2 h-4 w-4" />
-                    Start Interview
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-blue-500/10 text-blue-500 px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      Behavioral
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-400 hover:text-white"
-                    >
-                      <Star className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <CardTitle className="text-lg text-white mt-2">
-                    Leadership & Teamwork
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    STAR method, Conflict resolution
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Clock className="h-4 w-4" />
-                    <span>45 minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>15 questions</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-                    <Play className="mr-2 h-4 w-4" />
-                    Start Interview
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-green-500/10 text-green-500 px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      Technical
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-400 hover:text-white"
-                    >
-                      <Star className="h-4 w-4 text-yellow-500" />
-                    </Button>
-                  </div>
-                  <CardTitle className="text-lg text-white mt-2">
-                    System Design Interview
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Architecture, Scalability, Database
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Clock className="h-4 w-4" />
-                    <span>60 minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>10 questions</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700">
-                    <Play className="mr-2 h-4 w-4" />
-                    Start Interview
-                  </Button>
-                </CardFooter>
-              </Card>
+              {paginatedInterviews?.length ? (
+                paginatedInterviews?.map((interview) => (
+                  <CardInterview key={interview.id} interview={interview} />
+                ))
+              ) : (
+                <div className="col-span-full text-center text-gray-400">
+                  No interviews found
+                </div>
+              )}
             </div>
 
-            <div className="flex items-center justify-center gap-2 py-4">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 bg-gray-800 border-gray-700 text-gray-400"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                className="h-8 bg-gray-800 border-gray-700 text-white"
-              >
-                1
-              </Button>
-              <Button
-                variant="outline"
-                className="h-8 bg-gray-800/50 border-gray-700 text-gray-400"
-              >
-                2
-              </Button>
-              <Button
-                variant="outline"
-                className="h-8 bg-gray-800/50 border-gray-700 text-gray-400"
-              >
-                3
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 bg-gray-800 border-gray-700 text-gray-400"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </TabsContent>
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 py-4">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 bg-gray-800 border-gray-700 text-gray-400"
+                  onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
 
-          <TabsContent value="technical" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-purple-500/10 text-purple-500 px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      Technical
-                    </div>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
                     <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-400 hover:text-white"
+                      key={page}
+                      variant="outline"
+                      className={`h-8 ${
+                        currentPage === page
+                          ? "bg-gray-800 text-white"
+                          : "bg-gray-800/50 text-gray-400"
+                      } border-gray-700`}
+                      onClick={() => handlePageChange(page)}
                     >
-                      <Star className="h-4 w-4" />
+                      {page}
                     </Button>
-                  </div>
-                  <CardTitle className="text-lg text-white mt-2">
-                    Frontend Developer Interview
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    React, JavaScript, CSS
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Clock className="h-4 w-4" />
-                    <span>30 minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>25 questions</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-                    <Play className="mr-2 h-4 w-4" />
-                    Start Interview
-                  </Button>
-                </CardFooter>
-              </Card>
+                  )
+                )}
 
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-green-500/10 text-green-500 px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      Technical
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-400 hover:text-white"
-                    >
-                      <Star className="h-4 w-4 text-yellow-500" />
-                    </Button>
-                  </div>
-                  <CardTitle className="text-lg text-white mt-2">
-                    System Design Interview
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Architecture, Scalability, Database
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Clock className="h-4 w-4" />
-                    <span>60 minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>10 questions</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700">
-                    <Play className="mr-2 h-4 w-4" />
-                    Start Interview
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="behavioral" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-blue-500/10 text-blue-500 px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      Behavioral
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-400 hover:text-white"
-                    >
-                      <Star className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <CardTitle className="text-lg text-white mt-2">
-                    Leadership & Teamwork
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    STAR method, Conflict resolution
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Clock className="h-4 w-4" />
-                    <span>45 minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>15 questions</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
-                    <Play className="mr-2 h-4 w-4" />
-                    Start Interview
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="saved" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-green-500/10 text-green-500 px-2.5 py-0.5 rounded-full text-xs font-medium">
-                      Technical
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-400 hover:text-white"
-                    >
-                      <Star className="h-4 w-4 text-yellow-500" />
-                    </Button>
-                  </div>
-                  <CardTitle className="text-lg text-white mt-2">
-                    System Design Interview
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    Architecture, Scalability, Database
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <Clock className="h-4 w-4" />
-                    <span>60 minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>10 questions</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700">
-                    <Play className="mr-2 h-4 w-4" />
-                    Start Interview
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 bg-gray-800 border-gray-700 text-gray-400"
+                  onClick={() =>
+                    handlePageChange(Math.min(totalPages, currentPage + 1))
+                  }
+                  disabled={currentPage === totalPages}
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>

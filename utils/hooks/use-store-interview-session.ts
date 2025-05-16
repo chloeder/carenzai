@@ -8,7 +8,7 @@ export function useStoreInterviewSession() {
   const { mutate: interviewSession, isPending } = useMutation({
     mutationFn: storeInterviewSession,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["interview-session"] });
+      queryClient.invalidateQueries({ queryKey: ["interview"] });
       toast.success("Interview session created successfully");
     },
     onError: () => {
