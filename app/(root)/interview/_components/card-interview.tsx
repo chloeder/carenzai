@@ -8,7 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { InterviewSession, InterviewAnswer } from "@prisma/client";
-import { Clock, MessageSquare, Play, Star } from "lucide-react";
+import { Clock, MessageSquare, Play } from "lucide-react";
+import Image from "next/image";
 
 export function CardInterview({
   interview,
@@ -36,7 +37,7 @@ export function CardInterview({
           Language :
           {interview.language === "english" ? (
             <div className="flex items-center gap-2">
-              <img
+              <Image
                 width="20"
                 height="20"
                 className="rounded-lg"
@@ -47,7 +48,7 @@ export function CardInterview({
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <img
+              <Image
                 width="20"
                 height="20"
                 className="rounded-lg"

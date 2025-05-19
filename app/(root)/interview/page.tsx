@@ -23,7 +23,7 @@ export default function InterviewContent() {
     try {
       await interviewSession(values);
     } catch (error) {
-      console;
+      console.log(error);
     }
   }
 

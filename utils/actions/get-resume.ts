@@ -8,6 +8,6 @@ export async function getResume(userId: string) {
       userId: userId,
     },
   });
-  console.log(resume);
+
   return resume;
 }

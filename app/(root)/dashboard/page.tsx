@@ -25,8 +25,6 @@ export default function Dashboard() {
   const { refetch, data: user } = useInitUser();
   const { data: interviews } = useGetInterview(user?.id ?? "");
   const { data: resumes } = useGetResume(user?.id ?? "");
-  console.log(interviews);
-  console.log(resumes);
 
   useEffect(() => {
     refetch();
