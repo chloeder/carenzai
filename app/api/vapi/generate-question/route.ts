@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
       Keep each question concise and suitable to be read aloud in a voice interview format (max 20 seconds per question).
 
-      Output your questions as a single string in plain text. Start each question with a dash (-) and keep the format consistent. Don't include any explanations, just the questions.
+      Output your questions as a single string in plain text. Start each question with a dash (-) and keep the format consistent. Don't include any explanations, don't include any other text, don't say hello or anything else even in the beginning and another language, no introduction, just generate the questions.
 
       Example output format:
 

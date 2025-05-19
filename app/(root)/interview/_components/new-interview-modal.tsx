@@ -33,10 +33,13 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { NewInterviewModalProps } from "../../../../utils/types/interview";
 import { formSchema } from "../../../../utils/validations/interview";
+import React from "react";
+
 export function NewInterviewModal({
   onSubmit,
   isPending,
 }: NewInterviewModalProps) {
+  const [open, setOpen] = React.useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,8 +51,15 @@ export function NewInterviewModal({
     },
   });
 
+  React.useEffect(() => {
+    if (!isPending) {
+      setOpen(false);
+      form.reset();
+    }
+  }, [isPending, form]);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="text-white cursor-pointer bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
           <Plus className="mr-2 h-4 w-4" />
