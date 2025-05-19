@@ -15,7 +15,6 @@ import {
   ArrowUpRight,
   BarChart3,
   FileText,
-  Loader,
   MessageSquare,
   Users,
 } from "lucide-react";
