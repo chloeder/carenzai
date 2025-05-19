@@ -1,5 +1,6 @@
 "use server";
 
+import { confUrl } from "@/constants";
 import { db } from "../dbs";
 import { InterviewAnswerFormData } from "../types/interview";
 import { getCurrentUser } from "./get-current-user";
@@ -32,17 +33,14 @@ export async function storeInterviewAnswer(data: InterviewAnswerFormData) {
       throw new Error("Resume not found");
     }
 
-    const response = await fetch(
-      "http://localhost:3000/api/vapi/generate-question",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          ...data,
-          language: session.language,
-          type: session.type,
-        }),
-      }
-    );
+    const response = await fetch(`${confUrl.apiUrl}/vapi/generate-question`, {
+      method: "POST",
+      body: JSON.stringify({
+        ...data,
+        language: session.language,
+        type: session.type,
+      }),
+    });
 
     const question = await response.json();
 

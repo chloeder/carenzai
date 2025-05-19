@@ -2,6 +2,7 @@
 
 import { getCurrentUser } from "./get-current-user";
 import { db } from "../dbs";
+import { confUrl } from "@/constants";
 
 export async function storeResume(data: File) {
   const user = await getCurrentUser();
@@ -15,13 +16,10 @@ export async function storeResume(data: File) {
 
     formData.append("resume", data);
 
-    const response = await fetch(
-      "http://localhost:3000/api/gemini/summary-resume",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    const response = await fetch(`${confUrl.apiUrl}/gemini/summary-resume`, {
+      method: "POST",
+      body: formData,
+    });
 
     const result = await response.json();
 
