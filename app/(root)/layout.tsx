@@ -2,7 +2,6 @@
 
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { HeaderLayout } from "./_components/header";
-import { Metadata } from "next";
 import { Lexend } from "next/font/google";
 import { usePathname } from "next/navigation";
 
