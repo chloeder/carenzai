@@ -7,9 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { InterviewSession, InterviewAnswer } from "@prisma/client";
+import { InterviewAnswer, InterviewSession } from "@prisma/client";
 import { Clock, MessageSquare, Play } from "lucide-react";
 import Image from "next/image";
+import unitedKingdomFlag from "@/public/flags/uk.png";
+import indonesiaFlag from "@/public/flags/id.png";
 
 export function CardInterview({
   interview,
@@ -42,7 +44,7 @@ export function CardInterview({
                 height="20"
                 className="rounded-lg"
                 alt="Flag of the United Kingdom"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/512px-Flag_of_the_United_Kingdom_%283-5%29.svg.png?20230715230526"
+                src={unitedKingdomFlag}
               />
               <span>English</span>
             </div>
@@ -53,7 +55,7 @@ export function CardInterview({
                 height="20"
                 className="rounded-lg"
                 alt="Flag of Indonesia"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/512px-Flag_of_Indonesia.svg.png?20200822164827"
+                src={indonesiaFlag}
               />
               <span>Indonesia</span>
             </div>
